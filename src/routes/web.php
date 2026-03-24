@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,13 @@ use App\Http\Controllers\AttendanceController;
 Route::get('/', function () {
     return redirect('/login');
 });
+Route::get('/home', function () {
+    return redirect('/attendance');
+});
+Route::get('/dashboard', function () {
+    return redirect('/attendance');
+});
+
 
 
 
@@ -29,10 +37,6 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    // ダッシュボード
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 
 
 
@@ -64,10 +68,28 @@ Route::middleware(['auth'])->group(function () {
 
     // 今月一覧
     Route::get('/attendance/list', [AttendanceController::class, 'list'])
-        ->name('attendance.list')
-        ->middleware('auth');
+        ->name('attendance.list');
+
 
     Route::get('/attendance/{id}', [AttendanceController::class, 'show'])
-        ->name('attendance.show')
-        ->middleware('auth');
+        ->name('attendance.show');
+
+
+    Route::post('/attendance/{id}/request', [AttendanceController::class, 'requestCorrection'])
+        ->name('attendance.request');
+
+    Route::get('/attendance/requests', [AttendanceController::class, 'requests'])
+        ->name('attendance.requests');
+
+    Route::get('/attendance/{id}/request-form', [AttendanceController::class, 'requestForm'])
+        ->name('attendance.request.form');
+
+    Route::get('/admin/login',[AdminController::class,'showLogin']);
+
+    Route::post('/admin/login',[AdminController::class,'login'])->name('admin.login');
+
+    Route::get('/admin/requests',[AdminController::class,'requests'])->name('admin.requests');
+
+    Route::post('/admin/requests/{id}/approve',[AdminController::class,'approve'])->name('admin.requests.approve');
+
 });

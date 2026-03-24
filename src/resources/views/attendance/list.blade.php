@@ -17,8 +17,9 @@
                 ← 前月
             </a>
 
-            <div class="month-label">
-                {{ $currentMonth->format('Y年n月') }}
+            <div class="month-display">
+                <img src="{{ asset('images/calendar.svg') }}" class="calendar-icon" alt="Calendar Icon">
+                <span class="current-month">{{ $currentMonth->format('Y年n月') }}</span>
             </div>
 
             <a href="{{ route('attendance.list', ['month' => $currentMonth->copy()->addMonth()->format('Y-m')]) }}"
@@ -80,7 +81,7 @@
 
                         {{-- 詳細ボタン --}}
                         <td>
-                            <a href="{{ route('attendance.show', $attendance->id) }}"
+                            <a href="{{ route('attendance.show', ['id' => $attendance->id, 'month' => $currentMonth->format('Y-m')]) }}"
                                 class="detail-link">
                                 詳細
                             </a>
